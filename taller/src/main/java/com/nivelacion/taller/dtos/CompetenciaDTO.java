@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.nivelacion.taller.enums.Estado;
+
 public class CompetenciaDTO {
 
     private Long id;
@@ -14,50 +16,37 @@ public class CompetenciaDTO {
     private String nombre;
 
     @NotNull(message = "Ingrese el estado")
-    @Size(min = 1)
-    private String estado;
+    private Estado estado;
 
-    @NotNull(message = "Ingrese una fecha")
-    private LocalDateTime fecha;
+    @NotNull(message = "Ingrese una fecha de baja")
+    private LocalDateTime fecha_baja;
 
-    private Boolean eliminado;
+    @NotNull(message = "Ingrese una fecha de inicio")
+    private LocalDateTime fecha_inicio;
 
-    @NotNull(message = "Ingrese un lugar")
-    @Size(min = 1)
-    private String lugar;
+    @NotNull(message = "Ingrese una fecha de creación")
+    private LocalDateTime fecha_creacion;
 
     private UsuarioDTO usuario;
 
     public CompetenciaDTO() {
     }
 
-    public CompetenciaDTO(@NotNull(message = "Ingrese un nombre de competencia") @Size(min = 1) String nombre,
-            @NotNull(message = "Ingrese un estado") @Size(min = 1) String estado,
-            @NotNull(message = "Ingrese una fecha") LocalDateTime fecha,
-            @NotNull(message = "Ingrese si la competencia ha sido eliminada") Boolean eliminado,
-            @NotNull(message = "Ingrese un lugar") @Size(min = 1) String lugar,
+    public CompetenciaDTO(Long id, @NotNull(message = "Ingrese un nombre") @Size(min = 1) String nombre,
+            @NotNull(message = "Ingrese el estado") @Size(min = 1) Estado estado,
+            @NotNull(message = "Ingrese una fecha de baja") LocalDateTime fecha_baja,
+            @NotNull(message = "Ingrese una fecha de inicio") LocalDateTime fecha_inicio,
+            @NotNull(message = "Ingrese una fecha de creación") LocalDateTime fecha_creacion,
             UsuarioDTO usuario) {
+        this.id = id;
         this.nombre = nombre;
         this.estado = estado;
-        this.fecha = fecha;
-        this.eliminado = eliminado;
-        this.lugar = lugar;
+        this.fecha_baja = fecha_baja;
+        this.fecha_inicio = fecha_inicio;
+        this.fecha_creacion = fecha_creacion;
         this.usuario = usuario;
     }
-
-    public CompetenciaDTO(Long id, @NotNull(message = "Ingrese un nombre de competencia") @Size(min = 1) String nombre,
-            @NotNull(message = "Ingrese un estado") @Size(min = 1) String estado,
-            @NotNull(message = "Ingrese una fecha") LocalDateTime fecha,
-            @NotNull(message = "Ingrese si la competencia ha sido eliminada") Boolean eliminado,
-            @NotNull(message = "Ingrese un lugar") @Size(min = 1) String lugar,
-            UsuarioDTO usuario) {
-        this.nombre = nombre;
-        this.estado = estado;
-        this.fecha = fecha;
-        this.eliminado = eliminado;
-        this.lugar = lugar;
-        this.usuario = usuario;
-    }
+    // Getters y setters
 
     public Long getId() {
         return id;
@@ -75,36 +64,36 @@ public class CompetenciaDTO {
         this.nombre = nombre;
     }
 
-    public String getEstado() {
+    public Estado getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(Estado estado) {
         this.estado = estado;
     }
 
-    public LocalDateTime getFecha() {
-        return fecha;
+    public LocalDateTime getFecha_baja() {
+        return fecha_baja;
     }
 
-    public void setFecha(LocalDateTime fecha) {
-        this.fecha = fecha;
+    public void setFecha_baja(LocalDateTime fecha_baja) {
+        this.fecha_baja = fecha_baja;
     }
 
-    public Boolean getEliminado() {
-        return eliminado;
+    public LocalDateTime getFecha_inicio() {
+        return fecha_inicio;
     }
 
-    public void setEliminado(Boolean eliminado) {
-        this.eliminado = eliminado;
+    public void setFecha_inicio(LocalDateTime fecha_inicio) {
+        this.fecha_inicio = fecha_inicio;
     }
 
-    public String getLugar() {
-        return lugar;
+    public LocalDateTime getFecha_creacion() {
+        return fecha_creacion;
     }
 
-    public void setLugar(String lugar) {
-        this.lugar = lugar;
+    public void setFecha_creacion(LocalDateTime fecha_creacion) {
+        this.fecha_creacion = fecha_creacion;
     }
 
     public UsuarioDTO getUsuario() {
@@ -114,4 +103,5 @@ public class CompetenciaDTO {
     public void setUsuario(UsuarioDTO usuario) {
         this.usuario = usuario;
     }
+
 }

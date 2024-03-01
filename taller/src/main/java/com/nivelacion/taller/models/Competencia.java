@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.nivelacion.taller.enums.Estado;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,21 +38,24 @@ public class Competencia {
     @Column(name = "nombre")
     private String nombre;
 
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "estado", nullable = false)
-    private String estado;
+    private Estado estado;
 
-    @Column(name = "fecha", nullable = false)
+    @Column(name = "fecha_baja")
     @DateTimeFormat(pattern = "dd-MM-YYYY HH:mm:ss")
-    private LocalDateTime fecha;
+    private LocalDateTime fecha_baja;
 
-    @Column(name = "eliminado", nullable = false)
-    private Boolean eliminado;
+    @Column(name = "fecha_inicio", nullable = false)
+    @DateTimeFormat(pattern = "dd-MM-YYYY HH:mm:ss")
+    private LocalDateTime fecha_inicio;
 
-    @Column(name = "lugar", nullable = false)
-    private String lugar;
+    @Column(name = "fecha_creacion", nullable = false)
+    @DateTimeFormat(pattern = "dd-MM-YYYY HH:mm:ss")
+    private LocalDateTime fecha_creacion;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "competenciaId")
+    @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
 }

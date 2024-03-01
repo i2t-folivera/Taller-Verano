@@ -2,6 +2,7 @@ package com.nivelacion.taller.services.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,37 +39,46 @@ public class UsuarioServicesImpl implements UsuarioService, UserDetailsService {
     private UsuarioMapper usuarioMapper;
 
     @Override
-    public UserDetails loadUserByUsername(String correo) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository.findByCorreo(correo);
+    public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
+        Usuario usuario = usuarioRepository.findByMail(mail);
         if (usuario == null) {
             log.error("Usuario no encontrado en la BD");
             throw new UsernameNotFoundException("usuario no encontrado en la bd");
         } else {
-            log.info("El usuario encontrado en la BD es: {}", correo);
+            log.info("El usuario encontrado en la BD es: {}", mail);
         }
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
+        // AGREGAR ROL ADMIN
+        // if (usuario.getRoles() == null || usuario.getRoles().isEmpty()) {
+        // // Si el usuario no tiene roles asignados, asignamos automáticamente el rol
+        // // ADMIN
+        // usuario.setRoles(Collections.singleton(Role.ROLE_ADMIN));
+        // usuarioRepository.save(usuario);
+        // }
+
         usuario.getRoles().forEach(role -> {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         });
 
-        return new org.springframework.security.core.userdetails.User(usuario.getCorreo(), usuario.getContraseña(),
+        return new org.springframework.security.core.userdetails.User(usuario.getMail(), usuario.getContrasenia(),
                 authorities);
     }
 
     @Override
     public Usuario saveUsuario(Usuario usuario) {
-        log.info("Registro nuevo usuario {} en la BD" + usuario.getCorreo());
-        usuario.setContraseña(passwordEncoder.encode(usuario.getContraseña()));
+        log.info("Registro nuevo usuario {} en la BD" + usuario.getMail());
+        usuario.setContrasenia(passwordEncoder.encode(usuario.getContrasenia()));
         return usuarioRepository.save(usuario);
     }
 
     @Override
     public UsuarioDTO registerUserLoginDTO(UsuarioDTO usuarioDTO) throws Exception {
-        Boolean existeCorreo = this.usuarioRepository.existsByCorreo(usuarioDTO.getCorreo());
-        if (!existeCorreo) {
+        Boolean existeMail = this.usuarioRepository.existsByMail(usuarioDTO.getMail());
+        if (!existeMail) {
             Usuario newUser = usuarioMapper.dto2Model(usuarioDTO);
-            newUser.setContraseña(passwordEncoder.encode(newUser.getContraseña()));// encripto contraseña
+            newUser.setContrasenia(passwordEncoder.encode(newUser.getContrasenia()));// encripto contrasenia
             // Obtener el rol del UserDTO o establecer por defecto ADMIN si no se
             // proporciona
             // String rol = (usuarioDTO.getRoles() != null &&
@@ -82,14 +92,14 @@ public class UsuarioServicesImpl implements UsuarioService, UserDetailsService {
                 // Si el usuario no tiene roles asignados, estableceremos "ROLE_USER" por
                 // defecto
                 roles = new HashSet<>();
-                roles.add(Role.ROLE_USER);
+                roles.add(Role.ROLE_ADMIN);
             }
             newUser.setRoles(roles);
             this.usuarioRepository.save(newUser);
 
             return usuarioDTO;
         } else {
-            throw new Exception("Correo existente, elija otro por favor.");
+            throw new Exception("Mail existente, elija otro por favor.");
         }
     }
 
@@ -100,18 +110,18 @@ public class UsuarioServicesImpl implements UsuarioService, UserDetailsService {
     }
 
     @Override
-    public void addRoleToUsuario(String correo, Role role) {
-        log.info("Agregando rol {} al usuario {} ", role.getName(), correo);
-        Usuario usuario = usuarioRepository.findByCorreo(correo);
+    public void addRoleToUsuario(String mail, Role role) {
+        log.info("Agregando rol {} al usuario {} ", role.getName(), mail);
+        Usuario usuario = usuarioRepository.findByMail(mail);
         usuario.getRoles().add(role);
         usuarioRepository.save(usuario);
 
     }
 
     @Override
-    public Usuario getUsuario(String correo) {
-        log.info("Obteniendo usuario {} ", correo);
-        return usuarioRepository.findByCorreo(correo);
+    public Usuario getUsuario(String mail) {
+        log.info("Obteniendo usuario {} ", mail);
+        return usuarioRepository.findByMail(mail);
     }
 
     @Override

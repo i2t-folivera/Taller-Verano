@@ -65,12 +65,12 @@ public class UsuarioController {
     @PostMapping(value = "/usuario/save")
     public ResponseEntity<?> registerUser(@RequestBody UsuarioDTO usuarioDTO)
             throws Exception {
-        UsuarioDTO dto = usuarioService.registerUserLoginDTO(usuarioDTO);// trae nombre, apellido, correo y contraseña
+        UsuarioDTO dto = usuarioService.registerUserLoginDTO(usuarioDTO);// trae nombre, apellido, mail y contrasenia
         UsuarioDTO dtoResponse = new UsuarioDTO();
         dtoResponse.setNombre(dto.getNombre());
         dtoResponse.setApellido(dto.getApellido());
-        dtoResponse.setCorreo(dto.getCorreo());
-        dtoResponse.setContraseña(dto.getContraseña());
+        dtoResponse.setMail(dto.getMail());
+        dtoResponse.setContrasenia(dto.getContrasenia());
         dtoResponse.setRoles(dto.getRoles());
         return new ResponseEntity<UsuarioDTO>(dtoResponse, HttpStatus.OK);
     }
@@ -86,7 +86,7 @@ public class UsuarioController {
     public ResponseEntity<?> addRoleToUser(@RequestBody RoleToUserForm form) {
         // usuarioService.addRoleToUsuario(form.getUsername(), form.getRolename());
         // return ResponseEntity.ok().build();
-        Usuario usuario = usuarioRepository.findByCorreo(form.getUsername());
+        Usuario usuario = usuarioRepository.findByMail(form.getUsername());
         if (usuario == null) {
             return ResponseEntity.notFound().build();
         }
@@ -112,7 +112,7 @@ public class UsuarioController {
                 String username = decodedJWT.getSubject();
                 Usuario usuario = usuarioService.getUsuario(username);
                 String access_token = JWT.create()
-                        .withSubject(usuario.getCorreo())
+                        .withSubject(usuario.getMail())
                         .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                         .withIssuer(request.getRequestURL().toString())
                         .withClaim("roles",

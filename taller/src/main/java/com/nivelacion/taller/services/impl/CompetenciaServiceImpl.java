@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nivelacion.taller.dtos.CompetenciaDTO;
+import com.nivelacion.taller.enums.Estado;
 import com.nivelacion.taller.exceptions.EmptyListException;
 import com.nivelacion.taller.exceptions.ModelNotFoundException;
 import com.nivelacion.taller.mappers.CompetenciaMapper;
@@ -15,9 +16,12 @@ import com.nivelacion.taller.repository.CompetenciaRepository;
 import com.nivelacion.taller.repository.UsuarioRepository;
 import com.nivelacion.taller.services.CompetenciaService;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class CompetenciaServiceImpl implements CompetenciaService {
 
     @Autowired
@@ -35,6 +39,7 @@ public class CompetenciaServiceImpl implements CompetenciaService {
         if (modelList == null || modelList.isEmpty()) {
             throw new EmptyListException("Lista de competencias vacía");
         }
+
         return competenciaMapper.modelToDTO(modelList);
     }
 
@@ -53,14 +58,15 @@ public class CompetenciaServiceImpl implements CompetenciaService {
                 throw new ModelNotFoundException(dto.getId(), "Competencia");
             }
         }
-
         // Mapear DTO a modelo
         model = competenciaMapper.dto2Model(dto);
+
         // Asignar el usuario al modelo de competencia
         model.setUsuario(usuario);
 
         // Guardar la competencia en la base de datos
         Competencia modelSaved = competenciaRepository.save(model);
+
         // Mapear modelo a DTO
         CompetenciaDTO result = competenciaMapper.original2DTO(modelSaved);
 

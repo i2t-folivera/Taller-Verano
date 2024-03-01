@@ -15,8 +15,8 @@ public class UsuarioMapper {
         UsuarioDTO dtoUser = new UsuarioDTO();
         dtoUser.setNombre(usuario.getNombre());
         dtoUser.setApellido(usuario.getApellido());
-        dtoUser.setCorreo(usuario.getCorreo());
-        dtoUser.setContraseña(usuario.getContraseña());
+        dtoUser.setMail(usuario.getMail());
+        dtoUser.setContrasenia(usuario.getContrasenia());
         dtoUser.setRoles(usuario.getRoles());
         return dtoUser;
     }
@@ -25,8 +25,8 @@ public class UsuarioMapper {
         Usuario newUser = new Usuario();
         newUser.setNombre(userDTO.getNombre());
         newUser.setApellido(userDTO.getApellido());
-        newUser.setCorreo(userDTO.getCorreo());
-        newUser.setContraseña(userDTO.getContraseña());
+        newUser.setMail(userDTO.getMail());
+        newUser.setContrasenia(userDTO.getContrasenia());
         newUser.setRoles(userDTO.getRoles());
         return newUser;
     }
@@ -40,8 +40,8 @@ public class UsuarioMapper {
     }
 
     public void userEntityRefreshValues(Usuario userEntity, UsuarioDTO dto) {
-        if (dto.getCorreo() != null && dto.getCorreo().isBlank()) {
-            userEntity.setCorreo(dto.getCorreo());
+        if (dto.getMail() != null && dto.getMail().isBlank()) {
+            userEntity.setMail(dto.getMail());
         }
         if (dto.getNombre() != null && !dto.getNombre().isBlank()) {
             userEntity.setNombre(dto.getNombre());
@@ -49,19 +49,19 @@ public class UsuarioMapper {
         if (dto.getApellido() != null && !dto.getApellido().isBlank()) {
             userEntity.setApellido(dto.getApellido());
         }
-        if (dto.getCorreo() != null && !dto.getCorreo().isBlank()) {
-            userEntity.setCorreo(dto.getCorreo());
+        if (dto.getMail() != null && !dto.getMail().isBlank()) {
+            userEntity.setMail(dto.getMail());
         }
-        if (dto.getContraseña() != null && !dto.getContraseña().isBlank()) {
-            userEntity.setContraseña(dto.getContraseña());
+        if (dto.getContrasenia() != null && !dto.getContrasenia().isBlank()) {
+            userEntity.setContrasenia(dto.getContrasenia());
         }
         userEntity.setRoles(dto.getRoles());
     }
 
     // public UsuarioLoginDTO userToDTO(Usuario usuario) {
     // UsuarioLoginDTO usuarioLoginDTO = new UsuarioLoginDTO();
-    // usuarioLoginDTO.setUsername(usuario.getCorreo());
-    // usuarioLoginDTO.setPassword(usuario.getContraseña());
+    // usuarioLoginDTO.setUsername(usuario.getMail());
+    // usuarioLoginDTO.setPassword(usuario.getContrasenia());
     // return usuarioLoginDTO;
     // }
 }

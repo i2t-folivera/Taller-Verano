@@ -26,20 +26,20 @@ public class TallerApplication {
 		return new BCryptPasswordEncoder();
 	}
 
-	@Bean
-	CommandLineRunner run(UsuarioService usuarioService) {
-		return args -> {
-			usuarioService.saveUsuario(new Usuario(null, "fabio", "olivera",
-					"fabio@i2t.com.ar", "1234",
-					Collections.singletonList(Role.ROLE_USER)));
-			usuarioService.saveUsuario(new Usuario(null, "mile", "olivera",
-					"mile@i2t.com.ar", "1234",
-					Collections.singletonList(Role.ROLE_ADMIN)));
+	// @Bean
+	// CommandLineRunner run(UsuarioService usuarioService) {
+	// return args -> {
+	// usuarioService.saveUsuario(new Usuario(null, "fabio", "olivera",
+	// "fabio@i2t.com.ar", "1234",
+	// Collections.singletonList(Role.ROLE_USER)));
+	// usuarioService.saveUsuario(new Usuario(null, "mile", "olivera",
+	// "mile@i2t.com.ar", "1234",
+	// Collections.singletonList(Role.ROLE_ADMIN)));
 
-			// usuarioService.addRoleToUsuario("fabio@i2t.com.ar", Role.ROLE_USER);
-			// usuarioService.addRoleToUsuario("mile@i2t.com.ar", Role.ROLE_ADMIN);
+	// // usuarioService.addRoleToUsuario("fabio@i2t.com.ar", Role.ROLE_USER);
+	// // usuarioService.addRoleToUsuario("mile@i2t.com.ar", Role.ROLE_ADMIN);
 
-		};
-	}
+	// };
+	// }
 
 }

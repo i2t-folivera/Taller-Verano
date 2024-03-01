@@ -19,44 +19,44 @@ public class UsuarioDTO {
     @Size(min = 1)
     private String apellido;
 
-    @NotNull(message = "Ingrese un correo")
+    @NotNull(message = "Ingrese un mail")
     @Size(min = 1)
-    private String correo;
+    private String mail;
 
     @NotNull(message = "Ingrese un rol")
     @Size(min = 1)
     private Collection<Role> roles;
 
-    @NotNull(message = "Ingrese una contraseña")
+    @NotNull(message = "Ingrese una contrasenia")
     @Size(min = 1)
-    private String contraseña;
+    private String contrasenia;
 
     public UsuarioDTO() {
     }
 
     public UsuarioDTO(@NotNull(message = "Ingrese un nombre") @Size(min = 1) String nombre,
             @NotNull(message = "Ingrese un apellido") @Size(min = 1) String apellido,
-            @NotNull(message = "Ingrese un correo") @Size(min = 1) String correo,
+            @NotNull(message = "Ingrese un mail") @Size(min = 1) String mail,
             @NotNull(message = "Ingrese un rol") @Size(min = 1) Collection<Role> roles,
-            @NotNull(message = "Ingrese una contraseña") @Size(min = 1) String contraseña) {
+            @NotNull(message = "Ingrese una contrasenia") @Size(min = 1) String contrasenia) {
         this.nombre = nombre;
         this.apellido = apellido;
-        this.correo = correo;
+        this.mail = mail;
         this.roles = roles;
-        this.contraseña = contraseña;
+        this.contrasenia = contrasenia;
     }
 
     public UsuarioDTO(Long id, @NotNull(message = "Ingrese un nombre") @Size(min = 1) String nombre,
             @NotNull(message = "Ingrese un apellido") @Size(min = 1) String apellido,
-            @NotNull(message = "Ingrese un correo") @Size(min = 1) String correo,
+            @NotNull(message = "Ingrese un mail") @Size(min = 1) String mail,
             @NotNull(message = "Ingrese un rol") @Size(min = 1) Collection<Role> roles,
-            @NotNull(message = "Ingrese una contraseña") @Size(min = 1) String contraseña) {
+            @NotNull(message = "Ingrese una contrasenia") @Size(min = 1) String contrasenia) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.correo = correo;
+        this.mail = mail;
         this.roles = roles;
-        this.contraseña = contraseña;
+        this.contrasenia = contrasenia;
     }
 
     public Long getId() {
@@ -83,12 +83,12 @@ public class UsuarioDTO {
         this.apellido = apellido;
     }
 
-    public String getCorreo() {
-        return correo;
+    public String getMail() {
+        return mail;
     }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
     public Collection<Role> getRoles() {
@@ -99,11 +99,11 @@ public class UsuarioDTO {
         this.roles = roles;
     }
 
-    public String getContraseña() {
-        return contraseña;
+    public String getContrasenia() {
+        return contrasenia;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setContrasenia(String contrasenia) {
+        this.contrasenia = contrasenia;
     }
 }

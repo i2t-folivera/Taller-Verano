@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 import com.nivelacion.taller.dtos.CompetenciaDTO;
+import com.nivelacion.taller.enums.Estado;
 import com.nivelacion.taller.models.Competencia;
 
 @Component
@@ -14,10 +15,10 @@ public class CompetenciaMapper {
     public CompetenciaDTO original2DTO(Competencia competencia) {
         CompetenciaDTO dtoCompetencia = new CompetenciaDTO();
         dtoCompetencia.setNombre(competencia.getNombre());
-        dtoCompetencia.setEstado(competencia.getEstado());
-        dtoCompetencia.setFecha(competencia.getFecha());
-        dtoCompetencia.setEliminado(competencia.getEliminado());
-        dtoCompetencia.setLugar(competencia.getLugar());
+        dtoCompetencia.setEstado(Estado.fromValor(competencia.getEstado().ordinal()));
+        dtoCompetencia.setFecha_baja(competencia.getFecha_baja());
+        dtoCompetencia.setFecha_inicio(competencia.getFecha_inicio());
+        dtoCompetencia.setFecha_creacion(competencia.getFecha_creacion());
         dtoCompetencia.setUsuario(new UsuarioMapper().originalToDTO(competencia.getUsuario()));
         return dtoCompetencia;
     }
@@ -25,10 +26,11 @@ public class CompetenciaMapper {
     public Competencia dto2Model(CompetenciaDTO competenciaDTO) {
         Competencia newCompetencia = new Competencia();
         newCompetencia.setNombre(competenciaDTO.getNombre());
-        newCompetencia.setEstado(competenciaDTO.getEstado());
-        newCompetencia.setFecha(competenciaDTO.getFecha());
-        newCompetencia.setEliminado(competenciaDTO.getEliminado());
-        newCompetencia.setLugar(competenciaDTO.getLugar());
+        newCompetencia.setEstado(Estado.fromValor(competenciaDTO.getEstado().ordinal())); // Asignación directa del enum
+                                                                                          // Estado
+        newCompetencia.setFecha_baja(competenciaDTO.getFecha_baja());
+        newCompetencia.setFecha_inicio(competenciaDTO.getFecha_inicio());
+        newCompetencia.setFecha_creacion(competenciaDTO.getFecha_creacion());
         newCompetencia.setUsuario(new UsuarioMapper().dto2Model(competenciaDTO.getUsuario()));
         return newCompetencia;
     }

@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.nivelacion.taller.enums.Role;
 
@@ -37,61 +38,13 @@ public class Usuario {
     @Column(name = "apellido")
     private String apellido;
 
-    @Column(name = "correo")
-    private String correo;
+    @Column(name = "mail")
+    private String mail;
 
-    @Column(name = "contraseña")
-    private String contraseña;
+    @Column(name = "contrasenia")
+    private String contrasenia;
 
-    @ElementCollection
+    @Transient
     private Collection<Role> roles = new ArrayList<>();
-
-    public Usuario(String nombre, String apellido, String correo, String contraseña, Collection<Role> roles) {
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.correo = correo;
-        this.contraseña = contraseña;
-        this.roles = roles;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-
-    public String getContraseña() {
-        return contraseña;
-    }
-
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
-    }
-
-    public Collection<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Collection<Role> roles) {
-        this.roles = roles;
-    }
 
 }
