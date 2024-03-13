@@ -1,11 +1,13 @@
 package com.nivelacion.taller.dtos;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.nivelacion.taller.enums.Role;
+import com.nivelacion.taller.models.Competencia;
 
 public class UsuarioDTO {
 
@@ -30,6 +32,8 @@ public class UsuarioDTO {
     @NotNull(message = "Ingrese una contrasenia")
     @Size(min = 1)
     private String contrasenia;
+
+    private List<Competencia> competencias;
 
     public UsuarioDTO() {
     }
@@ -105,5 +109,13 @@ public class UsuarioDTO {
 
     public void setContrasenia(String contrasenia) {
         this.contrasenia = contrasenia;
+    }
+
+    public List<Competencia> getCompetencias() {
+        return competencias;
+    }
+
+    public void setCompetencias(List<Competencia> competencias) {
+        this.competencias = competencias;
     }
 }

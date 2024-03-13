@@ -1,5 +1,6 @@
 package com.nivelacion.taller.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -36,9 +37,9 @@ public class CompetenciaController {
     @PostMapping("/competencia/save")
     public ResponseEntity<Object> save(@Valid @RequestBody CompetenciaDTO dto) {
         CompetenciaDTO dtoReturned = null;
-
         try {
             dtoReturned = this.competenciaServiceImpl.save(dto);
+            dtoReturned.setFecha_creacion(LocalDateTime.now());
         } catch (ModelNotFoundException e) {
             System.out.println(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());

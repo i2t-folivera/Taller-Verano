@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nivelacion.taller.dtos.UsuarioDTO;
 import com.nivelacion.taller.enums.Role;
 import com.nivelacion.taller.exceptions.ModelNotFoundException;
+import com.nivelacion.taller.mappers.UsuarioMapper;
 import com.nivelacion.taller.models.Usuario;
 import com.nivelacion.taller.repository.UsuarioRepository;
 import com.nivelacion.taller.services.UsuarioService;
@@ -49,20 +50,30 @@ public class UsuarioController {
 
     private final UsuarioService usuarioService;
     private final UsuarioRepository usuarioRepository;
+    private final UsuarioMapper usuarioMapper;
 
-    @GetMapping("/usuarios")
-    public ResponseEntity<List<Usuario>> getUsuarios() {
-        return ResponseEntity.ok().body(usuarioService.getUsuarios());
-    }
-
-    // @PostMapping("/usuario/save")
-    // public ResponseEntity<Usuario> saveUsuario(@RequestBody Usuario usuario) {
-    // URI uri = URI
-    // .create(ServletUriComponentsBuilder.fromCurrentContextPath().path("api/v1/usuario/save").toUriString());
-    // return ResponseEntity.created(uri).body(usuarioService.saveUsuario(usuario));
+    // @GetMapping("/usuarios")
+    // public ResponseEntity<List<Usuario>> getUsuarios() {
+    // return ResponseEntity.ok().body(usuarioService.getUsuarios());
     // }
 
-    @PostMapping(value = "/usuario/save")
+    @GetMapping("/usuarios")
+    public ResponseEntity<List<UsuarioDTO>> getUsuarios() {
+        List<Usuario> usuarios = usuarioService.getUsuarios();
+        List<UsuarioDTO> usuariosDTO = usuarios.stream()
+                .map(usuario -> {
+                    UsuarioDTO dto = usuarioMapper.originalToDTO(usuario); // Utilizamos el mapper para mapear el
+                                                                           // Usuario a UsuarioDTO
+                    dto.setCompetencias(usuario.getCompetencias()); // Asignamos las competencias
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(usuariosDTO);
+    }
+
+    // @PostMapping(value = "/usuario/save")
+    @PostMapping(value = "/usuario/save", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> registerUser(@RequestBody UsuarioDTO usuarioDTO)
             throws Exception {
         UsuarioDTO dto = usuarioService.registerUserLoginDTO(usuarioDTO);// trae nombre, apellido, mail y contrasenia

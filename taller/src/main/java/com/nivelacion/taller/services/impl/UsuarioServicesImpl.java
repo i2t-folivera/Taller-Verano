@@ -95,9 +95,13 @@ public class UsuarioServicesImpl implements UsuarioService, UserDetailsService {
                 roles.add(Role.ROLE_ADMIN);
             }
             newUser.setRoles(roles);
+
+            // Guardar el nuevo usuario en la base de datos
             this.usuarioRepository.save(newUser);
 
-            return usuarioDTO;
+            // return usuarioDTO;
+            // Devolver el DTO del nuevo usuario creado
+            return usuarioMapper.originalToDTO(newUser);
         } else {
             throw new Exception("Mail existente, elija otro por favor.");
         }
