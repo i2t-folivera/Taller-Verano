@@ -1,16 +1,22 @@
 package com.nivelacion.taller.services.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nivelacion.taller.dtos.CompetenciaDTO;
+import com.nivelacion.taller.dtos.ParticipanteDTO;
+import com.nivelacion.taller.dtos.PartidoDTO;
 import com.nivelacion.taller.enums.Estado;
 import com.nivelacion.taller.exceptions.EmptyListException;
 import com.nivelacion.taller.exceptions.ModelNotFoundException;
 import com.nivelacion.taller.mappers.CompetenciaMapper;
 import com.nivelacion.taller.models.Competencia;
+import com.nivelacion.taller.models.Participante;
+import com.nivelacion.taller.models.Partido;
 import com.nivelacion.taller.models.Usuario;
 import com.nivelacion.taller.repository.CompetenciaRepository;
 import com.nivelacion.taller.repository.UsuarioRepository;
@@ -32,6 +38,9 @@ public class CompetenciaServiceImpl implements CompetenciaService {
 
     @Autowired
     private CompetenciaMapper competenciaMapper;
+
+    @Autowired
+    private ParticipanteServiceImpl participanteServiceImpl;
 
     @Override
     public List<CompetenciaDTO> getCompetencias() throws EmptyListException {
@@ -71,6 +80,39 @@ public class CompetenciaServiceImpl implements CompetenciaService {
         CompetenciaDTO result = competenciaMapper.original2DTO(modelSaved);
 
         return result;
+    }
+
+    public void generarFixture() {
+        try {
+            List<List<ParticipanteDTO>> enfrentamientos = generarEnfrentamientos(
+                    participanteServiceImpl.getParticipantes());
+
+            // Imprimir el fixture si es necesario
+            for (int i = 0; i < enfrentamientos.size(); i++) {
+                List<ParticipanteDTO> enfrentamiento = enfrentamientos.get(i);
+                System.out.println("Partido " + (i + 1) + ": " + enfrentamiento.get(0).getNombre() + " vs "
+                        + enfrentamiento.get(1).getNombre());
+            }
+        } catch (EmptyListException e) {
+            System.out.println("Error al obtener la lista de participantes: " + e.getMessage());
+        }
+    }
+
+    private List<List<ParticipanteDTO>> generarEnfrentamientos(List<ParticipanteDTO> participantes) {
+        List<List<ParticipanteDTO>> enfrentamientos = new ArrayList<>();
+
+        // Barajar los participantes para aleatorizar los enfrentamientos
+        Collections.shuffle(participantes);
+
+        // Generar los enfrentamientos en base a la cantidad de participantes
+        for (int i = 0; i < participantes.size(); i += 2) {
+            List<ParticipanteDTO> enfrentamiento = new ArrayList<>();
+            enfrentamiento.add(participantes.get(i));
+            enfrentamiento.add(participantes.get(i + 1));
+            enfrentamientos.add(enfrentamiento);
+        }
+
+        return enfrentamientos;
     }
 
 }

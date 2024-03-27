@@ -31,6 +31,7 @@ public class CompetenciaController {
 
     @GetMapping("/competencias")
     public List<CompetenciaDTO> getCompetencias() throws EmptyListException {
+        competenciaServiceImpl.generarFixture();
         return competenciaServiceImpl.getCompetencias();
     }
 

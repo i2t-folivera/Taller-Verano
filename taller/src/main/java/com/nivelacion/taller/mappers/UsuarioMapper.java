@@ -13,6 +13,7 @@ public class UsuarioMapper {
 
     public UsuarioDTO originalToDTO(Usuario usuario) {
         UsuarioDTO dtoUser = new UsuarioDTO();
+        dtoUser.setId(usuario.getId());
         dtoUser.setNombre(usuario.getNombre());
         dtoUser.setApellido(usuario.getApellido());
         dtoUser.setMail(usuario.getMail());
@@ -23,6 +24,7 @@ public class UsuarioMapper {
 
     public Usuario dto2Model(UsuarioDTO userDTO) {
         Usuario newUser = new Usuario();
+        newUser.setId(userDTO.getId());
         newUser.setNombre(userDTO.getNombre());
         newUser.setApellido(userDTO.getApellido());
         newUser.setMail(userDTO.getMail());

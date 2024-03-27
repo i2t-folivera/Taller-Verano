@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -33,7 +34,8 @@ import org.springframework.http.MediaType;
 public class CustomAthorizationFilter extends OncePerRequestFilter {
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    protected void doFilterInternal(HttpServletRequest request,
+            HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
         if (request.getServletPath().equals("/api/v1/login")
@@ -73,4 +75,55 @@ public class CustomAthorizationFilter extends OncePerRequestFilter {
             }
         }
     }
+
+    // @Override
+    // protected void doFilterInternal(HttpServletRequest request,
+    // HttpServletResponse response, FilterChain filterChain)
+    // throws ServletException, IOException {
+
+    // if (request.getServletPath().equals("/api/v1/login")
+    // || request.getServletPath().equals("/api/v1/token/refresh")) {
+    // filterChain.doFilter(request, response);
+    // } else {
+    // String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+    // if (authorizationHeader != null && authorizationHeader.startsWith("Bearer "))
+    // {
+    // try {
+    // String token = authorizationHeader.substring("Bearer ".length());
+    // Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+    // JWTVerifier verifier = JWT.require(algorithm).build();
+    // DecodedJWT decodedJWT = verifier.verify(token);
+    // String username = decodedJWT.getSubject();
+    // String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
+    // Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+    // Arrays.stream(roles).forEach(role -> {
+    // authorities.add(new SimpleGrantedAuthority(role));
+    // });
+    // UsernamePasswordAuthenticationToken authenticationToken = new
+    // UsernamePasswordAuthenticationToken(
+    // username, null, authorities);
+    // SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+    // } catch (Exception exception) {
+    // log.error("Error en la autenticación: {}", exception.getMessage());
+    // response.setStatus(HttpStatus.FORBIDDEN.value());
+    // Map<String, String> error = new HashMap<>();
+    // error.put("error_message", exception.getMessage());
+    // response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+    // new ObjectMapper().writeValue(response.getOutputStream(), error);
+    // return;
+    // }
+    // }
+
+    // TokenExtractor tokenExtractor = new TokenExtractor();
+
+    // // Agregar el encabezado de autorización a todas las respuestas salientes
+    // String token = tokenExtractor.getTokenFromSecurityContext();
+    // if (token != null) {
+    // response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+    // }
+
+    // // Continuar con la cadena de filtros
+    // filterChain.doFilter(request, response);
+    // }
+    // }
 }

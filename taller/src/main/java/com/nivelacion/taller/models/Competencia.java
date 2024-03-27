@@ -1,6 +1,8 @@
 package com.nivelacion.taller.models;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
@@ -34,7 +37,7 @@ import lombok.NoArgsConstructor;
 public class Competencia {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id")
     private Long id;
 
@@ -61,6 +64,10 @@ public class Competencia {
     @JoinColumn(name = "id_usuario")
     @JsonBackReference
     private Usuario usuario;
+
+    @OneToMany(mappedBy = "competencia", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Partido> partidos = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {

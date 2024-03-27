@@ -14,6 +14,7 @@ public class CompetenciaMapper {
 
     public CompetenciaDTO original2DTO(Competencia competencia) {
         CompetenciaDTO dtoCompetencia = new CompetenciaDTO();
+        dtoCompetencia.setId(competencia.getId()); // Agregar el ID de la competencia
         dtoCompetencia.setNombre(competencia.getNombre());
         dtoCompetencia.setEstado(Estado.fromValor(competencia.getEstado().ordinal()));
         dtoCompetencia.setFecha_baja(competencia.getFecha_baja());
@@ -25,6 +26,7 @@ public class CompetenciaMapper {
 
     public Competencia dto2Model(CompetenciaDTO competenciaDTO) {
         Competencia newCompetencia = new Competencia();
+        newCompetencia.setId(competenciaDTO.getId());
         newCompetencia.setNombre(competenciaDTO.getNombre());
         newCompetencia.setEstado(Estado.fromValor(competenciaDTO.getEstado().ordinal())); // Asignación directa del enum
                                                                                           // Estado
