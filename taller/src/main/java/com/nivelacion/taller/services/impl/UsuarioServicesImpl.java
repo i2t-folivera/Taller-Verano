@@ -42,7 +42,7 @@ public class UsuarioServicesImpl implements UsuarioService, UserDetailsService {
     public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepository.findByMail(mail);
         if (usuario == null) {
-            log.error("Usuario no encontrado en la BD");
+            log.error("Usuario no encontrado en la BD: {}", mail);
             throw new UsernameNotFoundException("usuario no encontrado en la bd");
         } else {
             log.info("El usuario encontrado en la BD es: {}", mail);

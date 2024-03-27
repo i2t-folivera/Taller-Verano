@@ -130,23 +130,89 @@ public class CustomAthorizationFilter extends OncePerRequestFilter {
     // }
     // }
 
+    // @Override
+    // protected void doFilterInternal(HttpServletRequest request,
+    // HttpServletResponse response, FilterChain filterChain)
+    // throws ServletException, IOException {
+
+    // if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
+    // // Configurar los encabezados CORS para la solicitud OPTIONS
+    // response.setHeader("Access-Control-Allow-Origin", "*");
+    // response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS,
+    // DELETE, PUT");
+    // response.setHeader("Access-Control-Allow-Headers", "Authorization,
+    // Content-Type, Accept");
+    // response.setHeader("Access-Control-Max-Age", "3600");
+    // response.setStatus(HttpServletResponse.SC_OK);
+    // } else {
+    // // Si no es una solicitud OPTIONS, continuar con la lógica de autenticación y
+    // // autorización
+    // String authorizationHeader = request.getHeader(AUTHORIZATION);
+    // if (authorizationHeader != null && authorizationHeader.startsWith("Bearer "))
+    // {
+    // try {
+    // String token = authorizationHeader.substring("Bearer ".length());
+    // Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+    // JWTVerifier verifier = JWT.require(algorithm).build();
+    // DecodedJWT decodedJWT = verifier.verify(token);
+    // String username = decodedJWT.getSubject();
+    // String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
+    // Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+    // Arrays.stream(roles).forEach(role -> {
+    // authorities.add(new SimpleGrantedAuthority(role));
+    // });
+    // UsernamePasswordAuthenticationToken authenticationToken = new
+    // UsernamePasswordAuthenticationToken(
+    // username, null, authorities);
+    // SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+    // // Configurar los encabezados CORS para la solicitud real
+    // response.setHeader("Access-Control-Allow-Origin", "*");
+    // response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS,
+    // DELETE, PUT");
+    // response.setHeader("Access-Control-Allow-Headers", "Authorization,
+    // Content-Type, Accept");
+    // response.setHeader("Access-Control-Max-Age", "3600");
+
+    // filterChain.doFilter(request, response);
+    // } catch (Exception exception) {
+    // log.error("Error en el logging en: {}", exception.getMessage());
+    // response.setHeader("error", exception.getMessage());
+    // response.setStatus(HttpStatus.FORBIDDEN.value());
+    // Map<String, String> error = new HashMap<>();
+    // error.put("error_message", exception.getMessage());
+    // response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+    // new ObjectMapper().writeValue(response.getOutputStream(), error);
+    // }
+    // } else {
+    // filterChain.doFilter(request, response);
+    // }
+    // }
+    // }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
             HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
+        // Configurar los encabezados CORS para todas las solicitudes
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
+        response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept");
+        response.setHeader("Access-Control-Max-Age", "3600");
+
         if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
-            // Configurar los encabezados CORS para la solicitud OPTIONS
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
-            response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept");
-            response.setHeader("Access-Control-Max-Age", "3600");
+            // Si es una solicitud OPTIONS, responder con un código 200
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
             // Si no es una solicitud OPTIONS, continuar con la lógica de autenticación y
             // autorización
             String authorizationHeader = request.getHeader(AUTHORIZATION);
-            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            if (request.getRequestURI().equals("/api/v1/login")) {
+                // Si la solicitud es para el endpoint de inicio de sesión, permitir el acceso
+                // sin autenticación
+                filterChain.doFilter(request, response);
+            } else if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {
                     String token = authorizationHeader.substring("Bearer ".length());
                     Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
@@ -162,12 +228,6 @@ public class CustomAthorizationFilter extends OncePerRequestFilter {
                             username, null, authorities);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
-                    // Configurar los encabezados CORS para la solicitud real
-                    response.setHeader("Access-Control-Allow-Origin", "*");
-                    response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
-                    response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept");
-                    response.setHeader("Access-Control-Max-Age", "3600");
-
                     filterChain.doFilter(request, response);
                 } catch (Exception exception) {
                     log.error("Error en el logging en: {}", exception.getMessage());
@@ -179,7 +239,9 @@ public class CustomAthorizationFilter extends OncePerRequestFilter {
                     new ObjectMapper().writeValue(response.getOutputStream(), error);
                 }
             } else {
-                filterChain.doFilter(request, response);
+                // Si no hay token de autorización, devolver un código de estado de no
+                // autorizado
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             }
         }
     }
