@@ -3,6 +3,8 @@ package com.nivelacion.taller.mappers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.nivelacion.taller.dtos.UsuarioDTO;
@@ -10,6 +12,9 @@ import com.nivelacion.taller.models.Usuario;
 
 @Component
 public class UsuarioMapper {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public UsuarioDTO originalToDTO(Usuario usuario) {
         UsuarioDTO dtoUser = new UsuarioDTO();
@@ -54,8 +59,12 @@ public class UsuarioMapper {
         if (dto.getMail() != null && !dto.getMail().isBlank()) {
             userEntity.setMail(dto.getMail());
         }
+        // if (dto.getContrasenia() != null && !dto.getContrasenia().isBlank()) {
+        // userEntity.setContrasenia(dto.getContrasenia());
+        // }
         if (dto.getContrasenia() != null && !dto.getContrasenia().isBlank()) {
-            userEntity.setContrasenia(dto.getContrasenia());
+            // Encriptar la nueva contraseña antes de establecerla en el usuario
+            userEntity.setContrasenia(passwordEncoder.encode(dto.getContrasenia()));
         }
         userEntity.setRoles(dto.getRoles());
     }
