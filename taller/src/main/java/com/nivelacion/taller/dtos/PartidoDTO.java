@@ -10,18 +10,22 @@ public class PartidoDTO {
     private LocalDateTime fecha_realizacion;
     private LocalDateTime fecha_baja;
     private CompetenciaDTO competencia;
+    private ParticipanteDTO local;
+    private ParticipanteDTO visitante;
 
     public PartidoDTO() {
     }
 
     public PartidoDTO(Long id, Integer goles_local, Integer goles_visitante, LocalDateTime fecha_realizacion,
-            LocalDateTime fecha_baja, CompetenciaDTO competencia) {
+            LocalDateTime fecha_baja, CompetenciaDTO competencia, ParticipanteDTO local, ParticipanteDTO visitante) {
         this.id = id;
         this.goles_local = goles_local;
         this.goles_visitante = goles_visitante;
         this.fecha_realizacion = fecha_realizacion;
         this.fecha_baja = fecha_baja;
         this.competencia = competencia;
+        this.local = local;
+        this.visitante = visitante;
     }
 
     // Getters y setters
@@ -71,5 +75,21 @@ public class PartidoDTO {
 
     public void setCompetencia(CompetenciaDTO competencia) {
         this.competencia = competencia;
+    }
+
+    public ParticipanteDTO getLocal() {
+        return local;
+    }
+
+    public void setLocal(ParticipanteDTO local) {
+        this.local = local;
+    }
+
+    public ParticipanteDTO getVisitante() {
+        return visitante;
+    }
+
+    public void setVisitante(ParticipanteDTO visitante) {
+        this.visitante = visitante;
     }
 }

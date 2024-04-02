@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nivelacion.taller.dtos.CompetenciaDTO;
+import com.nivelacion.taller.dtos.PartidoDTO;
 import com.nivelacion.taller.exceptions.EmptyListException;
 import com.nivelacion.taller.exceptions.ModelNotFoundException;
 import com.nivelacion.taller.services.impl.CompetenciaServiceImpl;
+import com.nivelacion.taller.services.impl.PartidoServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 

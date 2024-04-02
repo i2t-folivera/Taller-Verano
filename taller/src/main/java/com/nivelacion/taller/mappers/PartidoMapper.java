@@ -20,6 +20,9 @@ public class PartidoMapper {
         dtoPartido.setFecha_realizacion(partido.getFecha_realizacion());
         dtoPartido.setFecha_baja(partido.getFecha_baja());
         dtoPartido.setCompetencia(new CompetenciaMapper().original2DTO(partido.getCompetencia()));
+        // Mapear local y visitante
+        dtoPartido.setLocal(new ParticipanteMapper().original2DTO(partido.getLocal()));
+        dtoPartido.setVisitante(new ParticipanteMapper().original2DTO(partido.getVisitante()));
         return dtoPartido;
     }
 
@@ -31,6 +34,9 @@ public class PartidoMapper {
         newPartido.setFecha_realizacion(partidoDTO.getFecha_realizacion());
         newPartido.setFecha_baja(partidoDTO.getFecha_baja());
         newPartido.setCompetencia(new CompetenciaMapper().dto2Model(partidoDTO.getCompetencia()));
+        // Mapear local y visitante
+        newPartido.setLocal(new ParticipanteMapper().dto2Model(partidoDTO.getLocal()));
+        newPartido.setVisitante(new ParticipanteMapper().dto2Model(partidoDTO.getVisitante()));
         return newPartido;
     }
 
