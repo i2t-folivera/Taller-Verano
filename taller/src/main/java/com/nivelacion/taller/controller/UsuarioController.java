@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -75,17 +76,35 @@ public class UsuarioController {
     }
 
     // @PostMapping(value = "/usuario/save")
+    // @PostMapping(value = "/usuario/save", consumes =
+    // MediaType.APPLICATION_JSON_VALUE)
+    // public ResponseEntity<?> registerUser(@RequestBody UsuarioDTO usuarioDTO)
+    // throws Exception {
+    // UsuarioDTO dto = usuarioService.registerUserLoginDTO(usuarioDTO);// trae
+    // nombre, apellido, mail y contrasenia
+    // UsuarioDTO dtoResponse = new UsuarioDTO();
+    // dtoResponse.setNombre(dto.getNombre());
+    // dtoResponse.setApellido(dto.getApellido());
+    // dtoResponse.setMail(dto.getMail());
+    // dtoResponse.setContrasenia(dto.getContrasenia());
+    // dtoResponse.setRoles(dto.getRoles());
+    // return new ResponseEntity<UsuarioDTO>(dtoResponse, HttpStatus.OK);
+    // }
     @PostMapping(value = "/usuario/save", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> registerUser(@RequestBody UsuarioDTO usuarioDTO)
-            throws Exception {
-        UsuarioDTO dto = usuarioService.registerUserLoginDTO(usuarioDTO);// trae nombre, apellido, mail y contrasenia
-        UsuarioDTO dtoResponse = new UsuarioDTO();
-        dtoResponse.setNombre(dto.getNombre());
-        dtoResponse.setApellido(dto.getApellido());
-        dtoResponse.setMail(dto.getMail());
-        dtoResponse.setContrasenia(dto.getContrasenia());
-        dtoResponse.setRoles(dto.getRoles());
-        return new ResponseEntity<UsuarioDTO>(dtoResponse, HttpStatus.OK);
+    @PermitAll
+    public ResponseEntity<?> registerUserWithoutToken(@RequestBody UsuarioDTO usuarioDTO) throws Exception {
+        try {
+            UsuarioDTO dto = usuarioService.registerUserLoginDTO(usuarioDTO);
+            UsuarioDTO dtoResponse = new UsuarioDTO();
+            dtoResponse.setNombre(dto.getNombre());
+            dtoResponse.setApellido(dto.getApellido());
+            dtoResponse.setMail(dto.getMail());
+            dtoResponse.setContrasenia(dto.getContrasenia());
+            dtoResponse.setRoles(dto.getRoles());
+            return new ResponseEntity<>(dtoResponse, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PostMapping("/role/save")

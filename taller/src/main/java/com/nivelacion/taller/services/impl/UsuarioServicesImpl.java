@@ -73,18 +73,49 @@ public class UsuarioServicesImpl implements UsuarioService, UserDetailsService {
         return usuarioRepository.save(usuario);
     }
 
+    // @Override
+    // public UsuarioDTO registerUserLoginDTO(UsuarioDTO usuarioDTO) throws
+    // Exception {
+    // Boolean existeMail =
+    // this.usuarioRepository.existsByMail(usuarioDTO.getMail());
+    // if (!existeMail) {
+    // Usuario newUser = usuarioMapper.dto2Model(usuarioDTO);
+    // newUser.setContrasenia(passwordEncoder.encode(newUser.getContrasenia()));//
+    // encripto contrasenia
+    // // Obtener el rol del UserDTO o establecer por defecto ADMIN si no se
+    // // proporciona
+    // // String rol = (usuarioDTO.getRoles() != null &&
+    // // !usuarioDTO.getRoles().isEmpty()) ? usuarioDTO.getRoles():
+    // // usuarioDTO.setRoles(["USER_ADMIN"]);
+    // // newUser.setRoles(rol);
+
+    // Collection<Role> roles = usuarioDTO.getRoles();
+
+    // if (roles == null || roles.isEmpty()) {
+    // // Si el usuario no tiene roles asignados, estableceremos "ROLE_USER" por
+    // // defecto
+    // roles = new HashSet<>();
+    // roles.add(Role.ROLE_ADMIN);
+    // }
+    // newUser.setRoles(roles);
+
+    // // Guardar el nuevo usuario en la base de datos
+    // this.usuarioRepository.save(newUser);
+
+    // // return usuarioDTO;
+    // // Devolver el DTO del nuevo usuario creado
+    // return usuarioMapper.originalToDTO(newUser);
+    // } else {
+    // throw new Exception("Mail existente, elija otro por favor.");
+    // }
+    // }
+
     @Override
     public UsuarioDTO registerUserLoginDTO(UsuarioDTO usuarioDTO) throws Exception {
         Boolean existeMail = this.usuarioRepository.existsByMail(usuarioDTO.getMail());
         if (!existeMail) {
             Usuario newUser = usuarioMapper.dto2Model(usuarioDTO);
-            newUser.setContrasenia(passwordEncoder.encode(newUser.getContrasenia()));// encripto contrasenia
-            // Obtener el rol del UserDTO o establecer por defecto ADMIN si no se
-            // proporciona
-            // String rol = (usuarioDTO.getRoles() != null &&
-            // !usuarioDTO.getRoles().isEmpty()) ? usuarioDTO.getRoles():
-            // usuarioDTO.setRoles(["USER_ADMIN"]);
-            // newUser.setRoles(rol);
+            newUser.setContrasenia(passwordEncoder.encode(newUser.getContrasenia())); // encriptar contraseña
 
             Collection<Role> roles = usuarioDTO.getRoles();
 
@@ -92,14 +123,13 @@ public class UsuarioServicesImpl implements UsuarioService, UserDetailsService {
                 // Si el usuario no tiene roles asignados, estableceremos "ROLE_USER" por
                 // defecto
                 roles = new HashSet<>();
-                roles.add(Role.ROLE_ADMIN);
+                roles.add(Role.ROLE_USER);
             }
             newUser.setRoles(roles);
 
             // Guardar el nuevo usuario en la base de datos
             this.usuarioRepository.save(newUser);
 
-            // return usuarioDTO;
             // Devolver el DTO del nuevo usuario creado
             return usuarioMapper.originalToDTO(newUser);
         } else {
